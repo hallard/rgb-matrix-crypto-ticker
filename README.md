@@ -1,13 +1,9 @@
-[![YouTube Channel Views](https://img.shields.io/youtube/channel/views/UCz5BOU9J9pB_O0B8-rDjCWQ?label=YouTube&style=social)](https://www.youtube.com/channel/UCz5BOU9J9pB_O0B8-rDjCWQ)
-
 # Cryptocurrency RGB Matrix Ticker 
 
 ## Credits
 
-### @veebch for btcticker
 This project is inspired from original [ePaper Cryptocurrency Ticker](https://github.com/veebch/btcticker) done by @veebch. So all credits are going to original project
 
-### @hzeller for RGB Matrix Code
 I just replaced original e-Paper display by an RGB Matrix One. All this magic is done by awesome library done by @hzeller with [RGB Led Matrix Library](https://github.com/hzeller/rpi-rgb-led-matrix)
 
 
@@ -15,36 +11,36 @@ I just replaced original e-Paper display by an RGB Matrix One. All this magic is
 
 (supports all 7000+ coins/currencies listed on [CoinGecko](https://api.coingecko.com/api/v3/coins/list))
 
-An Cryptocurrency price ticker that runs as a Python script on a Raspberry Pi connected to a 128x64 RGB Matrix. The script periodically takes data from CoinGecko and generate an final image file that will be displayed on the Matrix. Since on PI Zero generating image with Python can take some time (approx 30 seconds), process has been splitted in two parts:
+An Cryptocurrency price ticker that runs as a Python script on a Raspberry Pi connected to a 128x64 RGB Matrix. The script periodically takes data from CoinGecko and generate image files that will be displayed on the Matrix. Since on PI Zero generating image with Python can take some time (approx 30 seconds), process has been splitted in two parts:
 
-- one thread fired on basis interval to get data from coingecko and generate according final image file saved to SD card
+- one thread fired on basis interval to get data from coingecko.com and generate according final image
 - main loop that scroll thru images generated above for faster display (default 5 seconds)
 
-A few minutes work gives you a desk ornament that will tastefully and unobtrusively monitor a coin's journey moonward.
+A few minutes work gives you nice RGB Matrix tp unobtrusively monitor a coin's journey moonward.
 
 ## Crypto logo. 
 
-If image file corresponding to name of crypto is found (ie `btc_32.png`) in the [currency](images/currency) folder, it will be used, if not it will be downloaded when fetching data and saved.
+If image file corresponding to name of crypto is found (ie `bitcoin_32.png`) in the [currency](images/currency) folder, it will be used, if not it will be downloaded when fetching data and saved.
 
 Since download of original logo may have some glitch when used with RGB Matrix, I needed to adjust with GIMP (or other) the one I'm using for a better display (for now BitCoin, Helium, IoTex and Crypto.com). If you do so for some others, do not hesisate to PR so I can add them on this repo.
 
-If've included a script [get_icons.sh](get_icons.sh) go get crypto icons.
-
-![Action Shot](/images/actionshot/BasicLunar.jpg)
+I've also included a script [get_icons.sh](get_icons.sh) go get crypto icons.
 
 # Getting started
 
 ## Prerequisites
 
-(These instructions assume that your Raspberry Pi is already connected to the Internet, happily running `pip` and has `python3` installed)
+These instructions assume that your Raspberry Pi is already connected to the Internet, happily running `pip` and has `python3` installed)
 
 If you are running the Pi headless, connect to your Raspberry Pi using `ssh`.
 
 ### RGB LED Matrix tools and driver
 
-Please read carrefully installation and instruction of RGB matrix stuff from [official](https://github.com/hzeller/rpi-rgb-led-matrix) and test that your RGB matrix is working with [Python samples](https://github.com/hzeller/rpi-rgb-led-matrix/tree/master/bindings/python).
+Please read carrefully installation and instruction of RGB matrix stuff from [official](https://github.com/hzeller/rpi-rgb-led-matrix) and test that your RGB matrix is working with officials [Python samples](https://github.com/hzeller/rpi-rgb-led-matrix/tree/master/bindings/python).
 
 No need to go futher is this does not works.
+
+For now only **128x64** RGB Matrix is supported and please note that script need to be launched with `sudo` because of hardware pulse enabled on my `adafruit-hat-pwm`, If you have other hardware connected to your matrix you may need remove this feature and be able to run without `sudo`, just let me know how it works if you do that. You can change RGB hardware config in the main [cryptoticker.py](cryptoticker.py) file (and yes, it's hard coded for now)
 
 ### Install this repo
 
