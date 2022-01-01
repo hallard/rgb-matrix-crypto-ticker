@@ -62,12 +62,18 @@ Now clone the required software
 cd ~
 git clone https://github.com/hallard/rgb-matrix-crypto-ticker
 ```
-Move to the `rgb-matrix-crypto-ticker` directory, copy the example config to `config.yaml`
 
+Move to the `rgb-matrix-crypto-ticker` directory, copy the example config to `config.yaml`
 ```
 cd rgb-matrix-crypto-ticker
 cp config_example.yaml config.yaml
 ```
+
+Fill correct permission to image working folder for the daemon to be able to write 
+```
+chmod -R go+w images/working
+```
+
 
 ## Configuration via config file
 
@@ -78,6 +84,7 @@ display:
   cycle: true
   updatefrequency: 5
   scroll: none
+  scroll_pixel: 2
 ticker:
   currency: bitcoin,crypto-com-chain,helium,iotex
   exchange: default
@@ -91,7 +98,8 @@ ticker:
 
 - **cycle**: switch the display between the listed currencies if set to **true**, display only the first on the list if set to **false**
 - **display/updatefrequency**: (in seconds), how often display will cytle thru currencies data
-- **scroll**: how cycle effect scrolling is working values can be `top`, `bottom`, `left`, `right` or `none` (need fast PI for correct effect)
+- **scroll**: how cycle effect scrolling is working values can be `up`, `down`, `left`, `right` or `none`
+- **scroll_pixel**: number of pixel to move on when scrolling (8 for PI Zero, 2 for PI3 and 1 for PI4)
 - **currency**: the coin(s) you would like to display (must be the coingecko id)
 - **exchange**: leave this one
 - **fiatcurrency**: currency to display 
