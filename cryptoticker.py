@@ -62,14 +62,15 @@ brightness = 50
 def on_mqtt_connect(client, userdata, flags, rc):  # The callback for when the client connects to the broker
     global mqtt_topic
     # Print result of connection attempt
-    print("Connected with result code {0}".format(str(rc)))  
+    logging.debug("MQTT Connected with result code {0}".format(str(rc)))  
     # Subscribe to the topic to get ambiant brightness
     client.subscribe(mqtt_topic)  
 
 
 def on_mqtt_message(client, userdata, msg):  # The callback for when a PUBLISH message is received from the server.
     global brightness
-    #print("Message received-> " + msg.topic + " " + str(msg.payload))  # Print a received msg
+    # Print a received msg
+    logging.debug("MQTT -> " + msg.topic + " " + str(msg.payload))  
     try:
         d = json.loads(msg.payload)
         brightness = int(d['brightness']) * 2
@@ -448,7 +449,7 @@ def display_image(img, imgfile=None, scroll=None, scroll_pixel=2):
 def display_file(imgfile, scroll=None, scroll_pixel=2):
     global brightness
     if os.path.isfile(imgfile):
-        logging.info("Displaying " + imgfile + " brightness:" + str(brightness))
+        logging.debug("Displaying " + imgfile + " brightness:" + str(brightness))
     
         # just in case thread creating image working on this file
         while file_lock.locked():
