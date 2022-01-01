@@ -35,6 +35,7 @@ if sys.platform != "darwin":
     options.parallel = 1
     #options.disable_hardware_pulsing = 1
     options.hardware_mapping = 'adafruit-hat-pwm'
+    #options.hardware_mapping = 'regular'
     matrix = RGBMatrix(options = options)
 else:
     import locale
@@ -375,7 +376,7 @@ def currencycycle(curr_string):
     curr_list = curr_list[1:]+curr_list[:1]
     return curr_list
 
-def display_image(img, imgfile=None, scroll=None):
+def display_image(img, imgfile=None, scroll=None, scroll_pixel=2):
     global previous_image
     global brightness
     # Make image fit our screen.
@@ -394,7 +395,7 @@ def display_image(img, imgfile=None, scroll=None):
             if scroll == 'down':
                 ypos = 0
                 while ypos < img_height:
-                    ypos += 8
+                    ypos += scroll_pixel
                     if previous_image != None:
                         double_buffer.SetImage(previous_image, 0, -ypos)
                     double_buffer.SetImage(img, 0, -ypos + img_height)
@@ -405,7 +406,7 @@ def display_image(img, imgfile=None, scroll=None):
             elif scroll == 'up':
                 ypos = 0
                 while ypos < img_height:
-                    ypos += 8
+                    ypos += scroll_pixel
                     if previous_image != None:
                         double_buffer.SetImage(previous_image, 0, ypos)
                     double_buffer.SetImage(img, 0, ypos - img_height)
@@ -416,7 +417,7 @@ def display_image(img, imgfile=None, scroll=None):
             elif scroll == 'left':
                 xpos = 0
                 while xpos < img_width:
-                    xpos += 16
+                    xpos += scroll_pixel * 2
                     if previous_image != None:
                         double_buffer.SetImage(previous_image, -xpos)
                     double_buffer.SetImage(img, -xpos + img_width)
@@ -427,7 +428,7 @@ def display_image(img, imgfile=None, scroll=None):
             elif scroll == 'right':
                 xpos = 0
                 while xpos < img_width:
-                    xpos += 16
+                    xpos += scroll_pixel * 2
                     if previous_image != None:
                         double_buffer.SetImage(previous_image, xpos)
                     double_buffer.SetImage(img, xpos - img_width)
@@ -444,7 +445,7 @@ def display_image(img, imgfile=None, scroll=None):
             print(p) 
     return
 
-def display_file(imgfile, scroll=None):
+def display_file(imgfile, scroll=None, scroll_pixel=2):
     global brightness
     if os.path.isfile(imgfile):
         logging.info("Displaying " + imgfile + " brightness:" + str(brightness))
@@ -457,7 +458,7 @@ def display_file(imgfile, scroll=None):
         img = Image.open(imgfile)
         file_lock.release()
 
-        display_image(img, imgfile, scroll)
+        display_image(img, imgfile, scroll, scroll_pixel)
     else:
         logging.info("Can't display, file not found " + imgfile)
 
@@ -566,7 +567,7 @@ def main():
                 config['display']['currency']=",".join(crypto_list)
                 crypto_list = currencystringtolist(config['display']['currency'])
                 imgfile = os.path.join(picdir+'/working', crypto_list[0]+'.png')
-                display_file(imgfile, config['display']['scroll'])
+                display_file(imgfile, config['display']['scroll'],config['display']['scroll_pixel'] )
                 lastdisplay=time.time()
 
             # Reduces CPU load during that while loop

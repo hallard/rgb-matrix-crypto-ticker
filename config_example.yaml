@@ -3,6 +3,7 @@ display:
   24h: false
   updatefrequency: 5
   scroll: none
+  scroll_pixel: 2
 ticker:
   currency: bitcoin,crypto-com-chain,helium,iotex
   exchange: default
