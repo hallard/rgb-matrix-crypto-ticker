@@ -535,7 +535,8 @@ def main():
 
         if config['mqtt']['host'] != None:
             global mqtt_topic
-            mqtt_client = mqtt.Client("crypto_ticker")  # Create instance of client with client ID “digi_mqtt_test”
+            # Create instance of client with client ID 
+            mqtt_client = mqtt.Client("crypto_ticker_" + socket.gethostname())  
             mqtt_client.on_connect = on_mqtt_connect  # Define callback function for successful connection
             mqtt_client.on_message = on_mqtt_message  # Define callback function for receipt of a message
             mqtt_client.connect(config['mqtt']['host'], config['mqtt']['port'])
