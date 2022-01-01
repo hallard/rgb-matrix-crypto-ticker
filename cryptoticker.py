@@ -532,6 +532,8 @@ def main():
             displayfrequency=2.0
             logging.info("Throttling display frequency to 2 seconds")
 
+        brightness = config['display']['brightness']
+
         while internet() == False:
             logging.info("Waiting for internet")
 

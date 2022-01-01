@@ -85,6 +85,7 @@ display:
   updatefrequency: 5
   scroll: none
   scroll_pixel: 2
+  brightness: 50
 ticker:
   currency: bitcoin,crypto-com-chain,helium,iotex
   exchange: default
@@ -92,18 +93,39 @@ ticker:
   fiatcurrency: eur
   sparklinedays: 1 
   updatefrequency: 60
+mqtt:
+  host: 192.168.1.8
+  port: 1883
+  topic: smartclock/smartclock-40e0/tele/SENSOR
+```
+
+In my case, I got a smartclock that publish current brigthness of the room over MQTT, so I'm using this value to control brigthness of the Matrix.
+You can do the same, just need to adjust topic, should receive JSON data with field called `brightness`
+
+```json
+{
+    "analog":47,
+    "max_brightness":64,
+    "min_brightness":8,
+    "brightness":8,
+    "light":46
+}
 ```
 
 ### Values
 
 - **cycle**: switch the display between the listed currencies if set to **true**, display only the first on the list if set to **false**
 - **display/updatefrequency**: (in seconds), how often display will cytle thru currencies data
+- **brightness**: Matrix brightness from 0 to 100%, can be adjusted thru MQTT, see below
 - **scroll**: how cycle effect scrolling is working values can be `up`, `down`, `left`, `right` or `none`
 - **scroll_pixel**: number of pixel to move on when scrolling (8 for PI Zero, 2 for PI3 and 1 for PI4)
 - **currency**: the coin(s) you would like to display (must be the coingecko id)
 - **exchange**: leave this one
 - **fiatcurrency**: currency to display 
 - **ticker/updatefrequency**: (in seconds), how often to refresh currency data (so with 4 Crypto default will be updated each 60 * 4 minutes)
+- **host**: MQTT Host 
+- **port**: MQTT port 
+- **topic**: MQTT Topic (must receive JSON data with field brigthness) 
 
 ## Test
 
