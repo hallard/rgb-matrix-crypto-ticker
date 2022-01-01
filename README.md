@@ -47,8 +47,13 @@ For now only **128x64** RGB Matrix is supported and please note that script need
 Connect to your ticker over ssh and update and install necessary packages 
 ```
 sudo apt-get update
-sudo apt-get install -y python3-pip mc git libopenjp2-7
-sudo apt-get install -y libatlas-base-dev python3-pil
+sudo apt-get install -y git libopenjp2-7 libatlas-base-dev
+sudo apt-get install -y python3-pip python3-pil
+```
+
+Install the required Python3 modules
+```
+sudo pip3 install nh-currency paho-mqtt requests numpy matplotlib pillow PyYAML rpi.gpio
 ```
 
 Now clone the required software 
@@ -62,11 +67,6 @@ Move to the `rgb-matrix-crypto-ticker` directory, copy the example config to `co
 ```
 cd rgb-matrix-crypto-ticker
 cp config_example.yaml config.yaml
-
-```
-Install the required Python3 modules
-```
-python3 -m pip install -r requirements.txt
 ```
 
 ## Configuration via config file
