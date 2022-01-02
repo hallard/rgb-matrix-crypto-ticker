@@ -55,6 +55,7 @@ font_error = ImageFont.load(os.path.join(fontdir,'pil/tom-thumb.pil'))
 headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
 
 file_lock = threading.Lock()
+display_lock = threading.Lock()
 previous_image = None
 mqtt_topic = ""
 brightness = 50
@@ -380,9 +381,16 @@ def currencycycle(curr_string):
 def display_image(img, imgfile=None, scroll=None, scroll_pixel=2):
     global previous_image
     global brightness
+    global display_lock
     # Make image fit our screen.
     #img.thumbnail((128, 64), Image.ANTIALIAS)
+
     if sys.platform != "darwin":
+
+        # Just to be sure not aloready called by thread or main
+        while display_lock.locked():
+            time.sleep(0.1)
+        display_lock.acquire()
 
         img = img.convert('RGB')
         matrix.brightness = brightness
@@ -439,11 +447,16 @@ def display_image(img, imgfile=None, scroll=None, scroll_pixel=2):
 
             # save current image for next scroll
             previous_image = img
+
+        # Release lock
+        display_lock.release()
+
     else:
         if imgfile != None:
             # For testing mon my mac 
             p = os.system("cp " + imgfile + " /Users/charles/ssh/zero-a2ee/rgb-matrix-crypto-ticker/images/working/")
             print(p) 
+
     return
 
 def display_file(imgfile, scroll=None, scroll_pixel=2):
@@ -463,29 +476,36 @@ def display_file(imgfile, scroll=None, scroll_pixel=2):
     else:
         logging.info("Can't display, file not found " + imgfile)
 
-def fullupdate(config,lastcoinfetch):
+def update_thread(config, updatefrequency):
     """
     The steps required for a full update of a specific coin
     it does not change the display, just prepare the image
     to be displayed
     """
-    other={}
-    try:
-        # Get data 
-        pricestack, whichcoin = getData(config, other)
-        # generate sparkline
-        makeSpark(pricestack)
-        # update image for tuture display
-        image=updateImage(config, pricestack, other)
-        lastgrab=time.time()
-        time.sleep(0.2)
-    except Exception as e:
-        message="Data pull/print problem"
-        image=beanaproblem(str(e)+" Line: "+str(e.__traceback__.tb_lineno))
-        display_image(image)
-        time.sleep(20)
-        lastgrab=lastcoinfetch
-    return lastgrab
+    while True:
+        other={}
+        try:
+            # Get data 
+            pricestack, whichcoin = getData(config, other)
+            # generate sparkline
+            makeSpark(pricestack)
+            # update image for tuture display
+            image=updateImage(config, pricestack, other)
+
+        except Exception as e:
+            message = str(e)+" Line: "+str(e.__traceback__.tb_lineno)
+            logging.error(message)
+            image=beanaproblem("Data pull/print problem "+message)
+            display_image(image)
+
+        # prepare next coin 
+        if config['display']['cycle']==True:
+            crypto_list = currencycycle(config['ticker']['currency'])
+            config['ticker']['currency']=",".join(crypto_list)
+
+        time.sleep(updatefrequency)
+
+
 
 def configtocoinandfiat(config):
     crypto_list = currencystringtolist(config['ticker']['currency'])
@@ -516,10 +536,7 @@ def main():
         staticcoins=config['ticker']['currency']
         # Note how many coins in original config file
         howmanycoins=len(config['ticker']['currency'].split(","))
-        # Note that there has been no data pull yet
-        datapulled=False
         # Time of start
-        lastcoinfetch = time.time()
         # Quick Sanity check on update frequency (when data value are pulled from WEB)
         updatefrequency=float(config['ticker']['updatefrequency'])
         if updatefrequency < 60.0:
@@ -546,24 +563,15 @@ def main():
             mqtt_client.connect(config['mqtt']['host'], config['mqtt']['port'])
             mqtt_topic = config['mqtt']['topic']
 
-
         config['display']['currency'] = config['ticker']['currency']
         lastdisplay=time.time()-displayfrequency
-        lastcoinfetch=time.time() - updatefrequency -1
+
+        # Create a thread from a function with arguments
+        th = threading.Thread(target=update_thread, args=(config,updatefrequency))
+        # Start the thread
+        th.start()
+
         while True:
-            if (time.time() - lastcoinfetch > updatefrequency) or (datapulled==False):
-                if config['display']['cycle']==True:
-                    crypto_list = currencycycle(config['ticker']['currency'])
-                    config['ticker']['currency']=",".join(crypto_list)
-
-                    # Create a thread from a function with arguments
-                    th = threading.Thread(target=fullupdate, args=(config,lastcoinfetch))
-                    # Start the thread
-                    th.start()
-                    lastcoinfetch=time.time()
-
-                    #lastcoinfetch=fullupdate(config,lastcoinfetch)
-                    datapulled = True
 
             if time.time() - lastdisplay > displayfrequency:
                 crypto_list = currencycycle(config['display']['currency'])
@@ -591,6 +599,7 @@ def main():
         logging.info("ctrl + c:")
         image=beanaproblem("Keyboard Interrupt")
         display_image(image)
+        th.join()
         exit()
 
 if __name__ == '__main__':
