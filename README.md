@@ -130,7 +130,7 @@ You can do the same, just need to adjust topic, should receive JSON data with fi
 - **port**: MQTT port 
 - **topic**: MQTT Topic (must receive JSON data with field brigthness) 
 
-![Crypto Ticker Scrolling](/images/pictures/animated_scroll.gif)
+![Crypto Ticker Scrolling](/images/pictures/animated-scroll.gif)
 
 ## Test
 
