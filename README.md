@@ -1,5 +1,8 @@
 # Cryptocurrency RGB Matrix Ticker 
 
+
+![Crypto Ticker](/images/pictures/helium.png)
+
 ## Credits
 
 This project is inspired from original [ePaper Cryptocurrency Ticker](https://github.com/veebch/btcticker) done by @veebch. So all credits are going to original project
@@ -126,6 +129,8 @@ You can do the same, just need to adjust topic, should receive JSON data with fi
 - **host**: MQTT Host 
 - **port**: MQTT port 
 - **topic**: MQTT Topic (must receive JSON data with field brigthness) 
+
+![Crypto Ticker Scrolling](/images/pictures/animated_scroll.gif)
 
 ## Test
 
