@@ -37,6 +37,8 @@ if sys.platform != "darwin":
     options.hardware_mapping = 'adafruit-hat-pwm'
     #options.hardware_mapping = 'regular'
     matrix = RGBMatrix(options = options)
+    double_buffer = matrix.CreateFrameCanvas()
+
 else:
     import locale
     loc = locale.getlocale(locale.LC_ALL) 
@@ -382,6 +384,7 @@ def display_image(img, imgfile=None, scroll=None, scroll_pixel=2):
     global previous_image
     global brightness
     global display_lock
+    global double_buffer
     # Make image fit our screen.
     #img.thumbnail((128, 64), Image.ANTIALIAS)
 
@@ -398,7 +401,6 @@ def display_image(img, imgfile=None, scroll=None, scroll_pixel=2):
         if scroll==None or scroll=='none':
             matrix.SetImage(img.convert('RGB'))
         else:
-            double_buffer = matrix.CreateFrameCanvas()
             img_width, img_height = img.size
 
             if scroll == 'down':
