@@ -1,5 +1,6 @@
 # Cryptocurrency RGB Matrix Ticker 
 
+![Crypto Ticker Scrolling](/images/pictures/animated-scroll.gif)
 
 ![Crypto Ticker](/images/pictures/helium.png)
 
@@ -136,8 +137,6 @@ Later I will add a sensor to read luminosity from Raspberry PI and adjust but lo
 - **host**: MQTT Host 
 - **port**: MQTT port 
 - **topic**: MQTT Topic (must receive JSON data with field brigthness) 
-
-![Crypto Ticker Scrolling](/images/pictures/animated-scroll.gif)
 
 ## Test
 
