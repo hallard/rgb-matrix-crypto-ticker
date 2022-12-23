@@ -562,6 +562,9 @@ def main():
             mqtt_client = mqtt.Client("crypto_ticker_" + socket.gethostname())  
             mqtt_client.on_connect = on_mqtt_connect  # Define callback function for successful connection
             mqtt_client.on_message = on_mqtt_message  # Define callback function for receipt of a message
+            if config['mqtt']['username']!=None and config['mqtt']['password']!=None :
+                mqtt_client.username_pw_set(username=config['mqtt']['username'],password=config['mqtt']['password'])
+
             mqtt_client.connect(config['mqtt']['host'], config['mqtt']['port'])
             mqtt_topic = config['mqtt']['topic']
 
