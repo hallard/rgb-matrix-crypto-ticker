@@ -1,5 +1,6 @@
 # Cryptocurrency RGB Matrix Ticker 
 
+![Crypto Ticker Scrolling](/images/pictures/animated-scroll.gif)
 
 ![Crypto Ticker](/images/pictures/helium.png)
 
@@ -59,22 +60,27 @@ Install the required Python3 modules
 sudo pip3 install nh-currency paho-mqtt requests numpy matplotlib pillow PyYAML rpi.gpio
 ```
 
-Now clone the required software 
+If previous command claims version error (too old) for `numpy` and `pillow`, force install latest ones with the following
+```
+sudo pip3 install --upgrade --force-reinstall numpy pillow
+```
 
+Now clone the required software
 ```
 cd ~
 git clone https://github.com/hallard/rgb-matrix-crypto-ticker
 ```
 
-Move to the `rgb-matrix-crypto-ticker` directory, copy the example config to `config.yaml`
+
+Move to the `rgb-matrix-crypto-ticker` directory, fix permissions on `working` folder 
 ```
 cd rgb-matrix-crypto-ticker
-cp config_example.yaml config.yaml
+chmod -R go+w images/working
 ```
 
-Fill correct permission to image working folder for the daemon to be able to write 
+Copy the example config to `config.yaml` and adjust to your needs
 ```
-chmod -R go+w images/working
+cp config_example.yaml config.yaml
 ```
 
 
@@ -86,9 +92,9 @@ The file `config.yaml` (the copy of `config_example.yaml` you made earlier) cont
 display:
   cycle: true
   updatefrequency: 5
-  scroll: none
+  scroll: up
   scroll_pixel: 2
-  brightness: 50
+  brightness: 100
 ticker:
   currency: bitcoin,crypto-com-chain,helium,iotex
   exchange: default
@@ -115,6 +121,8 @@ You can do the same, just need to adjust topic, should receive JSON data with fi
 }
 ```
 
+Later I will add a sensor to read luminosity from Raspberry PI and adjust but looks like these indoor 128x64 are less bright than the outdoor 64x32 ones, so even with 100% brightness it does not seems to be too much.
+
 ### Values
 
 - **cycle**: switch the display between the listed currencies if set to **true**, display only the first on the list if set to **false**
@@ -129,8 +137,6 @@ You can do the same, just need to adjust topic, should receive JSON data with fi
 - **host**: MQTT Host 
 - **port**: MQTT port 
 - **topic**: MQTT Topic (must receive JSON data with field brigthness) 
-
-![Crypto Ticker Scrolling](/images/pictures/animated-scroll.gif)
 
 ## Test
 
