@@ -21,9 +21,9 @@
 
 echo "Getting icon for coinmarketcap ID:$1 saving as $2_32.png"
 # 16x16 will be used for 64x32 or 64x64 displays
-curl -o $2_16.jpg  https://s2.coinmarketcap.com/static/img/coins/16x16/$1.png
+curl -o $2_16.png  https://s2.coinmarketcap.com/static/img/coins/16x16/$1.png
 # 32x32 will be used for 128x64 displays
-curl -o $2_32.jpg  https://s2.coinmarketcap.com/static/img/coins/32x32/$1.png
+curl -o $2_32.png  https://s2.coinmarketcap.com/static/img/coins/32x32/$1.png
 
 #curl -o $2_64.jpg  https://s2.coinmarketcap.com/static/img/coins/64x64/$1.png
 #curl -o $2_128.jpg  https://s2.coinmarketcap.com/static/img/coins/128x128/$1.png
