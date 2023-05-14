@@ -110,10 +110,10 @@ mqtt:
   password:
 ```
 
+Leave MQTT `username` and `password` fields empty for no auth. 
+
 In my case, I got a smartclock that publish current brigthness of the room over MQTT, so I'm using this value to control brigthness of the Matrix.
 You can do the same, just need to adjust topic, should receive JSON data with field called `brightness`
-
-Leave MQTT `username` and `password` fields empty for no auth. 
 
 ```json
 {
