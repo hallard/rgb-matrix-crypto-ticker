@@ -34,8 +34,8 @@ if sys.platform != "darwin":
     options.chain_length = 1
     options.parallel = 1
     #options.disable_hardware_pulsing = 1
-    options.hardware_mapping = 'adafruit-hat-pwm'
-    #options.hardware_mapping = 'regular'
+    #options.hardware_mapping = 'adafruit-hat-pwm'
+    options.hardware_mapping = 'regular'
     matrix = RGBMatrix(options = options)
     double_buffer = matrix.CreateFrameCanvas()
 
@@ -48,7 +48,6 @@ dirname = os.path.dirname(__file__)
 picdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'images')
 fontdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'fonts')
 configfile = os.path.join(os.path.dirname(os.path.realpath(__file__)),'config.yaml')
-#font_date = ImageFont.truetype(os.path.join(fontdir,'PixelSplitter-Bold.ttf'),8)
 font_date = ImageFont.load(os.path.join(fontdir,'pil/5x8.pil'))
 font_trend = ImageFont.load(os.path.join(fontdir,'pil/6x9.pil'))
 font_error = ImageFont.load(os.path.join(fontdir,'pil/tom-thumb.pil'))
