@@ -96,7 +96,7 @@ display:
   scroll_pixel: 2
   brightness: 100
 ticker:
-  currency: bitcoin,crypto-com-chain,helium,iotex
+  currency: bitcoin,crypto-com-chain,helium,helium-iot,iotex
   exchange: default
 #  fiatcurrency: usd,eur,gbp
   fiatcurrency: eur
@@ -106,10 +106,14 @@ mqtt:
   host: 192.168.1.8
   port: 1883
   topic: smartclock/smartclock-40e0/tele/SENSOR
+  username:
+  password:
 ```
 
 In my case, I got a smartclock that publish current brigthness of the room over MQTT, so I'm using this value to control brigthness of the Matrix.
 You can do the same, just need to adjust topic, should receive JSON data with field called `brightness`
+
+Leave MQTT `username` and `password` fields empty for no auth. 
 
 ```json
 {
