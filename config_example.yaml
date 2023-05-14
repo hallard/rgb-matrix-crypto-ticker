@@ -2,11 +2,11 @@ display:
   cycle: true
   24h: false
   updatefrequency: 5
-  scroll: none
+  scroll: left
   scroll_pixel: 2
   brightness: 50
 ticker:
-  currency: bitcoin,crypto-com-chain,helium,iotex
+  currency: bitcoin,crypto-com-chain,helium,helium-iot,iotex
   exchange: default
 #  fiatcurrency: usd,eur,gbp
   fiatcurrency: eur
@@ -16,3 +16,6 @@ mqtt:
   host: 192.168.1.8
   port: 1883
   topic: smartclock/smartclock-40e0/tele/SENSOR
+  username:
+  password:
+
