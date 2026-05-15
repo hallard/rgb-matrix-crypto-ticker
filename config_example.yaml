@@ -15,7 +15,7 @@ ticker:
 mqtt:
   host: 192.168.1.8
   port: 1883
-  topic: smartclock/smartclock-40e0/tele/SENSOR
+#  topic: smartclock/smartclock-40e0/tele/SENSOR
   username:
   password:
 
