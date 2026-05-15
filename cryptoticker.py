@@ -557,8 +557,12 @@ def main():
 
         if config['mqtt']['host'] != None:
             global mqtt_topic
-            # Create instance of client with client ID 
-            mqtt_client = mqtt.Client("crypto_ticker_" + socket.gethostname())  
+            # Create instance of client with client ID, try V2 then V1
+            try:
+                mqtt_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1, "crypto_ticker_" + socket.gethostname())
+            except AttributeError:
+                mqtt_client = mqtt.Client("crypto_ticker_" + socket.gethostname())
+
             mqtt_client.on_connect = on_mqtt_connect  # Define callback function for successful connection
             mqtt_client.on_message = on_mqtt_message  # Define callback function for receipt of a message
             if config['mqtt']['username']!=None and config['mqtt']['password']!=None :
